@@ -132,6 +132,10 @@
       thisProduct.updateImages(formData);
     }
 
+    isOptionSelected(formData, paramId, optionId) {
+      return formData[paramId] && formData[paramId].includes(optionId);
+    }
+
     updatePrice(formData) {
       const thisProduct = this;
 
@@ -143,7 +147,7 @@
 
         for (let optionId in param.options) {
           const option = param.options[optionId];
-          const optionSelected = formData[paramId] && formData[paramId].includes(optionId);
+          const optionSelected = thisProduct.isOptionSelected(formData, paramId, optionId);
 
 
           if (optionSelected) {
@@ -169,7 +173,7 @@
         const param = thisProduct.data.params[paramId];
 
         for (let optionId in param.options) {
-          const optionSelected = formData[paramId] && formData[paramId].includes(optionId);
+          const optionSelected = thisProduct.isOptionSelected(formData, paramId, optionId);
 
           const optionImage = thisProduct.imageWrapper.querySelector('.' + paramId + '-' + optionId);
 
