@@ -40,14 +40,6 @@
     },
   };
 
-  const settings = {
-    amountWidget: {
-      defaultValue: 1,
-      defaultMin: 0,
-      defaultMax: 10,
-    }
-  };
-
   const templates = {
     menuProduct: Handlebars.compile(document.querySelector(select.templateOf.menuProduct).innerHTML),
   };
@@ -60,12 +52,10 @@
       thisProduct.data = data;
 
       thisProduct.renderInMenu();
-      thisProduct.initAccordion();
       thisProduct.getElements();
+      thisProduct.initAccordion();
       thisProduct.initOrderForm();
       thisProduct.processOrder();
-
-      console.log('new Product:', thisProduct);
     }
 
     renderInMenu() {
@@ -94,7 +84,12 @@
           select.all.menuProductsActive
         );
 
-        if (activeProduct && activeProduct !== thisProduct.element) {
+        if (activeProduct === null) {
+          thisProduct.element.classList.add(classNames.menuProduct.wrapperActive);
+          return;
+        }
+
+        if (activeProduct !== thisProduct.element) {
           activeProduct.classList.remove(classNames.menuProduct.wrapperActive);
         }
 
@@ -120,26 +115,27 @@
         event.preventDefault();
         thisProduct.processOrder();
       });
+    }
 
-      console.log('thisProduct:', thisProduct);
+    initAmountWidget() {
+      const thisProduct = this;
+
+      thisProduct.amountWidget = new AmountWidget(thisProduct.element.querySelector(select.menuProduct.amountWidget));  
     }
 
     processOrder() {
       const thisProduct = this;
 
       const formData = utils.serializeFormToObject(thisProduct.form);
-      console.log('formData:', formData);
 
       let price = thisProduct.data.price;
 
       for (let paramId in thisProduct.data.params) {
 
         const param = thisProduct.data.params[paramId];
-        console.log(paramId, param);
 
         for (let optionId in param.options) {
           const option = param.options[optionId];
-          console.log(optionId, option);
           const optionSelected = formData[paramId] && formData[paramId].includes(optionId);
 
           const optionImage = thisProduct.imageWrapper.querySelector('.' + paramId + '-' + optionId);
@@ -165,7 +161,6 @@
       }
 
       thisProduct.priceElem.innerHTML = price;
-      console.log('processOrder', thisProduct);
     }
 
     getElements() {
@@ -177,15 +172,20 @@
       thisProduct.cartButton = thisProduct.element.querySelector(select.menuProduct.cartButton);
       thisProduct.priceElem = thisProduct.element.querySelector(select.menuProduct.priceElem);
       thisProduct.imageWrapper = thisProduct.element.querySelector(select.menuProduct.imageWrapper);
+    }
+  }
 
-      console.log('thisProduct.priceElem:', thisProduct.priceElem);
+  class AmountWidget {
+    constructor(element) {
+      const thisWidget = this;
+
+      thisWidget.element = element;
     }
   }
 
   const app = {
     initMenu: function () {
       const thisApp = this;
-      console.log('thisApp.data:', thisApp.data);
 
       for (let productData in thisApp.data.products) {
         new Product(productData, thisApp.data.products[productData]);
@@ -194,11 +194,6 @@
 
     init: function () {
       const thisApp = this;
-      console.log('*** App starting ***');
-      console.log('thisApp:', thisApp);
-      console.log('classNames:', classNames);
-      console.log('settings:', settings);
-      console.log('templates:', templates);
 
       thisApp.initData();
       thisApp.initMenu();
