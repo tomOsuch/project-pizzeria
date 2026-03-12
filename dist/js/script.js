@@ -128,6 +128,13 @@
 
       const formData = utils.serializeFormToObject(thisProduct.form);
 
+      thisProduct.updatePrice(formData);
+      thisProduct.updateImages(formData);
+    }
+
+    updatePrice(formData) {
+      const thisProduct = this;
+
       let price = thisProduct.data.price;
 
       for (let paramId in thisProduct.data.params) {
@@ -138,15 +145,6 @@
           const option = param.options[optionId];
           const optionSelected = formData[paramId] && formData[paramId].includes(optionId);
 
-          const optionImage = thisProduct.imageWrapper.querySelector('.' + paramId + '-' + optionId);
-
-          if (optionImage) {
-            if (optionSelected) {
-              optionImage.classList.add(classNames.menuProduct.imageVisible);
-            } else {
-              optionImage.classList.remove(classNames.menuProduct.imageVisible);
-            }
-          }
 
           if (optionSelected) {
             if (!option.default) {
@@ -161,6 +159,29 @@
       }
 
       thisProduct.priceElem.innerHTML = price;
+    }
+
+    updateImages(formData) {
+      const thisProduct = this;
+
+      for (let paramId in thisProduct.data.params) {
+
+        const param = thisProduct.data.params[paramId];
+
+        for (let optionId in param.options) {
+          const optionSelected = formData[paramId] && formData[paramId].includes(optionId);
+
+          const optionImage = thisProduct.imageWrapper.querySelector('.' + paramId + '-' + optionId);
+
+          if (optionImage) {
+            if (optionSelected) {
+              optionImage.classList.add(classNames.menuProduct.imageVisible);
+            } else {
+              optionImage.classList.remove(classNames.menuProduct.imageVisible);
+            }
+          }
+        }
+      }
     }
 
     getElements() {
@@ -204,8 +225,6 @@
       thisApp.data = dataSource;
     },
   };
-
-
 
   app.init();
 }
