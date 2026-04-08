@@ -390,8 +390,7 @@
 
       const triggerCart = thisCart.dom.toggleTrigger;
 
-      triggerCart.addEventListener('click', function (event) {
-        event.preventDefault();
+      triggerCart.addEventListener('click', function () {
         thisCart.dom.wrapper.classList.toggle(classNames.cart.wrapperActive);
       })
 
