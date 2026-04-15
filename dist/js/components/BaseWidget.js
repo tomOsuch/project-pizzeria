@@ -26,20 +26,13 @@ class BaseWidget {
 
   set value(value) {
     const thisWidget = this;
+    const newValue = thisWidget.parsedValue(value);
 
-    const newValue = parseInt(value);
-
-    if (thisWidget.isValid(newValue)) {
-      if (thisWidget.correctValue !== newValue) {
-        thisWidget.correctValue = newValue;
-        thisWidget.renderValue();
-        thisWidget.dom.wrapper.dispatchEvent(new CustomEvent('updated', { bubbles: true }));
-      } else {
-        thisWidget.renderValue();
-      }
-    } else {
-      thisWidget.renderValue();
+    if (newValue != thisWidget.correctValue && thisWidget.isValid(newValue)) {
+      thisWidget.correctValue = newValue;
+      thisWidget.announce();
     }
+    thisWidget.renderValue();
   }
 
   setValue(value) {
