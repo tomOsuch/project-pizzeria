@@ -61,6 +61,10 @@ const app = {
   initMenu: function () {
     const thisApp = this;
 
+    if (!thisApp.data || !thisApp.data.products) {
+      return;
+    }
+
     for (let productData in thisApp.data.products) {
       new Product(thisApp.data.products[productData].id, thisApp.data.products[productData]);
     }

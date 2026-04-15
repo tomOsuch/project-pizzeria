@@ -78,7 +78,7 @@ class Product {
 
     thisProduct.amountWidget = new AmountWidget(thisProduct.element.querySelector(select.menuProduct.amountWidget));
 
-    thisProduct.amountWidget.element.addEventListener('updated', function () {
+    thisProduct.amountWidget.dom.wrapper.addEventListener('updated', function () {
       thisProduct.processOrder();
     });
   }
