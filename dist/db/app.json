@@ -253,5 +253,16 @@
       "starters": ["lemonWater"]
     }
   ],
-  "bookings": []
+  "bookings": [
+    {
+      "id": 1,
+      "date": "2026-04-10",
+      "hour": "12:30",
+      "table": 1,
+      "repeat": false,
+      "duration": 4,
+      "ppl": 3,
+      "starters": []
+    }
+  ]
 }
