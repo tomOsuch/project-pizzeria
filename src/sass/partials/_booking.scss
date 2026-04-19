@@ -147,6 +147,11 @@
       transform: rotate(45deg);
       transform-origin: 50% 50%;
       cursor: pointer;
+
+      &.selected {
+        background: $color-success;
+        color: $color-light;
+      }
   
       &--round {
         border-radius: 50%;
@@ -197,4 +202,18 @@
   .booking-options {
     @include flex(row, flex-start, space-between);
     margin: ($base-size * 4) auto;
+  }
+
+  .booking-table-message {
+    min-height: ($base-size * 2.5);
+    margin: ($base-size * 2) 0 0 0;
+    text-align: center;
+    font-weight: $font-bold;
+    color: $color-warning;
+    opacity: 0;
+    transition: opacity 200ms;
+
+    &.visible {
+      opacity: 1;
+    }
   }
