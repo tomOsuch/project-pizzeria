@@ -1,0 +1,269 @@
+.home-wrapper {
+  max-width: 880px;
+  margin: ($base-size * 3.5) auto;
+  padding: ($base-size * 6) ($base-size * 4);
+  background: $color-light;
+  border-bottom: 1px solid lighten($color-dark, 70%);
+  border-radius: $radius;
+}
+
+.home-cta {
+  @include flex(row, stretch, space-between);
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: ($base-size * 5);
+
+  &__tile {
+    position: relative;
+    flex: 1 1 260px;
+    min-height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    border-radius: $radius;
+    overflow: hidden;
+    color: $color-light;
+  }
+
+  &__media {
+    position: absolute;
+    inset: 0;
+    background: $color-dark center / cover no-repeat;
+    filter: grayscale(100%);
+    transform: scale(1.01);
+    transition: $transition;
+
+    &--order {
+      background-image: url('../../images/home/pizza-1.jpg');
+    }
+
+    &--book {
+      background-image: url('../../images/home/pizza-2.jpg');
+    }
+  }
+
+  &__tile::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: rgba($color-dark, 0.5);
+    transition: $transition;
+  }
+
+  &__tile:hover::after {
+    background: rgba($color-dark, 0.4);
+  }
+
+  &__tile:hover .home-cta__media {
+    transform: scale(1.04);
+  }
+
+  &__label {
+    position: relative;
+    z-index: 2;
+    @extend .h2;
+    color: $color-light;
+    font-size: 18px;
+    letter-spacing: 0.04em;
+  }
+}
+
+.home-hours-banner {
+  margin-bottom: ($base-size * 6);
+  padding: ($base-size * 3) ($base-size * 2);
+  background: $color-main;
+  color: $color-light;
+  text-align: center;
+  border-radius: $radius;
+  width: 100%;
+
+  &__title {
+    margin: 0 0 ($base-size * 1.5) 0;
+    font-family: $font-header;
+    font-size: 16px;
+    font-weight: $font-bold;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  &__when {
+    margin: 0;
+    font-family: $font-header;
+    font-size: 14px;
+    font-weight: $font-light;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+}
+
+.home-testimonial {
+  margin-bottom: ($base-size * 6);
+
+  &__viewport {
+    overflow: hidden;
+  }
+
+  &__track {
+    @include flex(row, stretch, flex-start);
+    transition: transform 0.35s ease;
+  }
+
+  &__slide {
+    flex: 0 0 100%;
+    @include flex(row, stretch, flex-start);
+    gap: ($base-size * 3);
+    margin: 0;
+  }
+
+  &__photo {
+    flex: 0 0 42%;
+    max-width: 280px;
+    line-height: 0;
+    overflow: hidden;
+    border-radius: $radius;
+
+    img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      min-height: 200px;
+      object-fit: cover;
+      filter: grayscale(100%);
+    }
+  }
+
+  &__content {
+    flex: 1 1 50%;
+    min-width: 0;
+  }
+
+  &__heading {
+    @extend .h1;
+    margin: 0 0 ($base-size * 2) 0;
+    font-size: 18px;
+    color: $color-dark;
+  }
+
+  &__text {
+    margin: 0 0 ($base-size * 2) 0;
+    color: lighten($color-dark, 15%);
+    font-size: 14px;
+    line-height: 1.7;
+  }
+
+  &__author {
+    margin: 0;
+    font-size: 13px;
+    font-style: italic;
+    color: lighten($color-dark, 25%);
+  }
+
+  &__dots {
+    @include flex(row, center, center);
+    gap: $base-size;
+    margin-top: ($base-size * 3);
+  }
+
+  &__dot {
+    width: 10px;
+    height: 10px;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: lighten($color-dark, 60%);
+    cursor: pointer;
+    transition: $transition;
+
+    &.active {
+      background: $color-dark;
+    }
+
+    &:hover {
+      background: lighten($color-dark, 35%);
+    }
+
+    &.active:hover {
+      background: $color-dark;
+    }
+  }
+}
+
+@media (max-width: 600px) {
+  .home-testimonial__slide {
+    flex-direction: column;
+  }
+
+  .home-testimonial__photo {
+    flex: none;
+    max-width: none;
+    width: 100%;
+  }
+}
+
+.home-gallery {
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: ($base-size * 1.5);
+    margin-bottom: ($base-size * 2);
+  }
+
+  &__item {
+    position: relative;
+    display: block;
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+    border-radius: $radius;
+    line-height: 0;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.35s ease;
+    }
+
+    &:hover img {
+      transform: scale(1.05);
+    }
+  }
+
+  &__overlay {
+    position: absolute;
+    inset: 0;
+    @include flex(row, center, center);
+    gap: ($base-size * 2);
+    background: rgba($color-dark, 0.35);
+    opacity: 0;
+    transition: opacity 0.25s ease;
+  }
+
+  &__item:hover .home-gallery__overlay {
+    opacity: 1;
+  }
+
+  &__icon {
+    color: $color-light;
+    font-size: 20px;
+    transition: color 0.25s ease;
+  }
+
+  &__item:hover .home-gallery__icon {
+    color: $color-main;
+  }
+
+  &__more {
+    display: inline-block;
+    font-size: 13px;
+    color: $color-main;
+    text-decoration: underline;
+  }
+}
+
+@media (max-width: 600px) {
+  .home-gallery__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

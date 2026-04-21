@@ -1,25 +1,40 @@
-import { settings, select,classNames } from './settings.js';
+import { settings, select, classNames } from './settings.js';
 import Product from './components/Product.js';
 import Cart from './components/Cart.js';
 import Booking from './components/Booking.js';
+import Home from './components/Home.js';
 
 const app = {
+  getPageIdFromHash: function () {
+    const raw = window.location.hash.replace(/^#\/?/, '');
+    return raw || null;
+  },
+
+  resolvePageId: function (idFromHash) {
+    const thisApp = this;
+    const fallbackId = thisApp.pages[0].id;
+
+    if (!idFromHash) {
+      return fallbackId;
+    }
+
+    for (let page of thisApp.pages) {
+      if (page.id === idFromHash) {
+        return page.id;
+      }
+    }
+
+    return fallbackId;
+  },
+
   initPages: function () {
     const thisApp = this;
 
     thisApp.pages = document.querySelector(select.containerOf.pages).children;
     thisApp.navLinks = document.querySelectorAll(select.widgets.nav.links);
 
-    const idFromHash = window.location.hash.replace('#/', '');
-
-    let pageMatchingHash = thisApp.pages[0].id;
-
-    for (let page of thisApp.pages) {
-      if (page.id === idFromHash) {
-        pageMatchingHash = page.id;
-        break;
-      }
-    }
+    const idFromHash = thisApp.getPageIdFromHash();
+    const pageMatchingHash = thisApp.resolvePageId(idFromHash);
 
     console.log('pageMatchingHash', pageMatchingHash);
     thisApp.activatePage(pageMatchingHash);
@@ -39,6 +54,11 @@ const app = {
         window.location.hash = '#/' + id;
       });
     }
+
+    window.addEventListener('hashchange', function () {
+      const nextId = thisApp.resolvePageId(thisApp.getPageIdFromHash());
+      thisApp.activatePage(nextId);
+    });
   },
 
   activatePage: function (pageId) {
@@ -102,6 +122,13 @@ const app = {
     thisApp.booking = new Booking(bookingWidget);
   },
 
+  initHome: function () {
+    const thisApp = this;
+    const homeElement = document.querySelector(select.containerOf.home);
+
+    thisApp.home = new Home(homeElement);
+  },
+
   init: function () {
     const thisApp = this;
 
@@ -110,6 +137,7 @@ const app = {
     thisApp.initMenu();
     thisApp.initCart();
     thisApp.initBooking();
+    thisApp.initHome();
   },
 };
 
