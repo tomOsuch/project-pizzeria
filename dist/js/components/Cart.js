@@ -60,8 +60,8 @@ class Cart {
 
     const data = {
       order: {
-        address: thisCart.dom.form.querySelector(select.cart.address).value,
-        phone: thisCart.dom.form.querySelector(select.cart.phone).value,
+        address: thisCart.dom.address.value,
+        phone: thisCart.dom.phone.value,
         totalPrice: thisCart.totalPrice,
         subtotalPrice: thisCart.subtotalPrice,
         totalNumber: thisCart.totalNumber,
@@ -99,11 +99,13 @@ class Cart {
       subtotalPrice += product.price;
     }
 
-    thisCart.totalPrice = subtotalPrice + (subtotalPrice > 0 ? deliveryFee : 0);
+    const actualDeliveryFee = subtotalPrice > 0 ? deliveryFee : 0;
+
+    thisCart.totalPrice = subtotalPrice + actualDeliveryFee;
 
     thisCart.dom.totalNumber.innerHTML = totalNumber;
     thisCart.dom.subtotalPrice.innerHTML = subtotalPrice;
-    thisCart.dom.deliveryFee.innerHTML = deliveryFee;
+    thisCart.dom.deliveryFee.innerHTML = actualDeliveryFee;
     thisCart.dom.totalPrice.innerHTML = thisCart.totalPrice;
   }
 
