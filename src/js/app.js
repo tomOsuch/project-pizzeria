@@ -129,6 +129,19 @@ const app = {
     thisApp.home = new Home(homeElement);
   },
 
+  initAddToCart: function () {
+    const thisApp = this;
+    const menuContainer = document.querySelector(select.containerOf.menu);
+
+    if (!menuContainer) {
+      return;
+    }
+
+    menuContainer.addEventListener('add-to-cart', function (event) {
+      thisApp.cart.add(event.detail.product);
+    });
+  },
+
   init: function () {
     const thisApp = this;
 
@@ -138,6 +151,7 @@ const app = {
     thisApp.initCart();
     thisApp.initBooking();
     thisApp.initHome();
+    thisApp.initAddToCart();
   },
 };
 
